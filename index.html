@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Utopia Restaurant Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9933A;
+      --gold-light: #E8B96A;
+      --gold-pale: #F5E0B0;
+      --cream: #FDF6E8;
+      --dark: #2A1A05;
+      --text: #3D2A0D;
+      --mandala: #D4A44C;
+    }
+
+    body {
+      background: #1a0e03;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 10px;
+      font-family: 'Lato', sans-serif;
+    }
+
+    .card {
+      background: var(--gold);
+      border-radius: 18px;
+      width: 860px;
+      max-width: 100%;
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 230px 1fr 1fr;
+      gap: 0;
+      box-shadow: 0 0 60px rgba(201,147,58,0.45), 0 0 120px rgba(0,0,0,0.6);
+      animation: fadeIn 1s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Corner mandalas ── */
+    .mandala {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      opacity: 0.55;
+    }
+    .mandala svg { width: 100%; height: 100%; }
+    .m-tl { top: 0;    left: 0;   }
+    .m-tr { top: 0;    right: 0;  transform: scaleX(-1); }
+    .m-bl { bottom: 0; left: 0;   transform: scaleY(-1); }
+    .m-br { bottom: 0; right: 0;  transform: scale(-1,-1); }
+
+    /* ── Arch panels ── */
+    .panel {
+      background: var(--cream);
+      border-radius: 60px 60px 50px 50px;
+      padding: 26px 20px 24px;
+      position: relative;
+      z-index: 2;
+      animation: slideUp 0.8s ease both;
+    }
+    .panel:nth-child(2) { animation-delay: .1s; }
+    .panel:nth-child(3) { animation-delay: .2s; }
+    .panel:nth-child(4) { animation-delay: .3s; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Left brand panel ── */
+    .brand-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 30px;
+      gap: 10px;
+    }
+
+    .brand-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--dark);
+      text-align: center;
+      line-height: 1.2;
+      letter-spacing: 1px;
+    }
+
+    .brand-sub {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .divider-dots {
+      display: flex; gap: 4px; align-items: center; margin: 2px 0;
+    }
+    .divider-dots span {
+      width: 5px; height: 5px; border-radius: 50%; background: var(--gold);
+      display: block;
+    }
+    .divider-dots span:nth-child(2) { width: 7px; height: 7px; }
+
+    .food-img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--gold-light);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+      background: radial-gradient(circle at 40% 40%, #c8843a 0%, #7a3e08 100%);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    /* decorative plate pattern */
+    .food-img::after {
+      content: '🍛';
+      font-size: 60px;
+    }
+
+    .spice-row {
+      display: flex; gap: 8px; align-items: center; margin-top: 6px;
+    }
+    .spice { font-size: 22px; }
+
+    .contact {
+      font-size: 9.5px;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.8;
+      margin-top: 10px;
+    }
+    .contact span { color: var(--gold); font-weight: 700; }
+
+    /* ── Menu panels (middle & right) ── */
+    .menu-panels {
+      display: contents;
+    }
+
+    .menu-panel {
+      padding: 22px 18px 20px;
+    }
+
+    .section {
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      color: var(--dark);
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .section-title::before,
+    .section-title::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0;
+      width: 28%; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold));
+      transform: translateY(-50%);
+    }
+    .section-title::after {
+      left: auto; right: 0;
+      background: linear-gradient(to left, transparent, var(--gold));
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4.5px 0;
+      border-bottom: 1px dotted rgba(201,147,58,0.25);
+      transition: background 0.2s;
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item:hover { background: rgba(201,147,58,0.07); border-radius: 4px; padding-left: 4px; }
+
+    .item-name {
+      font-size: 11px;
+      color: var(--text);
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+
+    .item-price {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--dark);
+      font-family: 'Cinzel', serif;
+      white-space: nowrap;
+      padding-left: 8px;
+    }
+
+    .section-divider {
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+      margin: 14px auto;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        padding: 18px;
+        gap: 12px;
+      }
+      .panel { border-radius: 30px; }
+      .brand-panel { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 16px; }
+      .brand-name { font-size: 18px; }
+      .food-img { width: 90px; height: 90px; }
+      .food-img::after { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Corner Mandalas -->
+  <div class="mandala m-tl">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="0" cy="0" r="90" fill="none" stroke="#5C3A00" stroke-width="1.2" opacity="0.6"/>
+      <circle cx="0" cy="0" r="72" fill="none" stroke="#5C3A00" stroke-width="0.8" opacity="0.5"/>
+      <circle cx="0" cy="0" r="55" fill="none" stroke="#5C3A00" stroke-width="1" opacity="0.4"/>
+      <g stroke="#5C3A00" stroke-width="0.7" opacity="0.5">
+        <line x1="0" y1="0" x2="90" y2="0"/><line x1="0" y1="0" x2="63.6" y2="63.6"/>
+        <line x1="0" y1="0" x2="0" y2="90"/><line x1="0" y1="0" x2="45" y2="77.9"/>
+        <line x1="0" y1="0" x2="77.9" y2="45"/>
+      </g>
+      <circle cx="0" cy="0" r="30" fill="#D4A44C" opacity="0.18"/>
+      <circle cx="0" cy="0" r="16" fill="#D4A44C" opacity="0.25"/>
+    </svg>
+  </div>
+  <div class="mandala m-tr">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="0" cy="0" r="90" fill="none" stroke="#5C3A00" stroke-width="1.2" opacity="0.6"/>
+      <circle cx="0" cy="0" r="72" fill="none" stroke="#5C3A00" stroke-width="0.8" opacity="0.5"/>
+      <circle cx="0" cy="0" r="55" fill="none" stroke="#5C3A00" stroke-width="1" opacity="0.4"/>
+      <g stroke="#5C3A00" stroke-width="0.7" opacity="0.5">
+        <line x1="0" y1="0" x2="90" y2="0"/><line x1="0" y1="0" x2="63.6" y2="63.6"/>
+        <line x1="0" y1="0" x2="0" y2="90"/><line x1="0" y1="0" x2="45" y2="77.9"/>
+        <line x1="0" y1="0" x2="77.9" y2="45"/>
+      </g>
+      <circle cx="0" cy="0" r="30" fill="#D4A44C" opacity="0.18"/>
+      <circle cx="0" cy="0" r="16" fill="#D4A44C" opacity="0.25"/>
+    </svg>
+  </div>
+  <div class="mandala m-bl">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="0" cy="0" r="90" fill="none" stroke="#5C3A00" stroke-width="1.2" opacity="0.6"/>
+      <circle cx="0" cy="0" r="72" fill="none" stroke="#5C3A00" stroke-width="0.8" opacity="0.5"/>
+      <circle cx="0" cy="0" r="55" fill="none" stroke="#5C3A00" stroke-width="1" opacity="0.4"/>
+      <g stroke="#5C3A00" stroke-width="0.7" opacity="0.5">
+        <line x1="0" y1="0" x2="90" y2="0"/><line x1="0" y1="0" x2="63.6" y2="63.6"/>
+        <line x1="0" y1="0" x2="0" y2="90"/><line x1="0" y1="0" x2="45" y2="77.9"/>
+        <line x1="0" y1="0" x2="77.9" y2="45"/>
+      </g>
+      <circle cx="0" cy="0" r="30" fill="#D4A44C" opacity="0.18"/>
+      <circle cx="0" cy="0" r="16" fill="#D4A44C" opacity="0.25"/>
+    </svg>
+  </div>
+  <div class="mandala m-br">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="0" cy="0" r="90" fill="none" stroke="#5C3A00" stroke-width="1.2" opacity="0.6"/>
+      <circle cx="0" cy="0" r="72" fill="none" stroke="#5C3A00" stroke-width="0.8" opacity="0.5"/>
+      <circle cx="0" cy="0" r="55" fill="none" stroke="#5C3A00" stroke-width="1" opacity="0.4"/>
+      <g stroke="#5C3A00" stroke-width="0.7" opacity="0.5">
+        <line x1="0" y1="0" x2="90" y2="0"/><line x1="0" y1="0" x2="63.6" y2="63.6"/>
+        <line x1="0" y1="0" x2="0" y2="90"/><line x1="0" y1="0" x2="45" y2="77.9"/>
+        <line x1="0" y1="0" x2="77.9" y2="45"/>
+      </g>
+      <circle cx="0" cy="0" r="30" fill="#D4A44C" opacity="0.18"/>
+      <circle cx="0" cy="0" r="16" fill="#D4A44C" opacity="0.25"/>
+    </svg>
+  </div>
+
+  <!-- Left Brand Panel -->
+  <div class="panel brand-panel">
+    <div class="brand-name">UTOPIA</div>
+    <div class="brand-sub">Restaurant</div>
+    <div class="divider-dots"><span></span><span></span><span></span></div>
+    <div class="food-img"></div>
+    <div class="spice-row">
+      <span class="spice">🌶️</span>
+      <span class="spice">🥣</span>
+      <span class="spice">🌿</span>
+    </div>
+    <div class="contact">
+      <span>☎</span> +1 800 UTOPIA<br>
+      <span>🌐</span> www.utopiarestaurant.com
+    </div>
+  </div>
+
+  <!-- Middle Menu Panel -->
+  <div class="panel menu-panel">
+    <div class="section">
+      <div class="section-title">Noodles</div>
+      <div class="menu-item"><span class="item-name">Egg Noodles</span><span class="item-price">₹500.00</span></div>
+      <div class="menu-item"><span class="item-name">Rice Noodles</span><span class="item-price">₹300.00</span></div>
+      <div class="menu-item"><span class="item-name">Carrot Noodles</span><span class="item-price">₹350.50</span></div>
+      <div class="menu-item"><span class="item-name">Garlic Noodles</span><span class="item-price">₹400.00</span></div>
+      <div class="menu-item"><span class="item-name">Butter Noodles</span><span class="item-price">₹500.50</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Noodles</span><span class="item-price">₹600.50</span></div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section">
+      <div class="section-title">Burger</div>
+      <div class="menu-item"><span class="item-name">Butter Burger</span><span class="item-price">₹600.00</span></div>
+      <div class="menu-item"><span class="item-name">Beef Burger</span><span class="item-price">₹700.00</span></div>
+      <div class="menu-item"><span class="item-name">Fruit Burger</span><span class="item-price">₹650.00</span></div>
+      <div class="menu-item"><span class="item-name">Lamb Burger</span><span class="item-price">₹800.00</span></div>
+      <div class="menu-item"><span class="item-name">Cheese Burger</span><span class="item-price">₹550.00</span></div>
+      <div class="menu-item"><span class="item-name">Double Burger</span><span class="item-price">₹650.00</span></div>
+    </div>
+  </div>
+
+  <!-- Right Menu Panel -->
+  <div class="panel menu-panel">
+    <div class="section">
+      <div class="section-title">Pizza</div>
+      <div class="menu-item"><span class="item-name">Onion Pizza</span><span class="item-price">₹450.00</span></div>
+      <div class="menu-item"><span class="item-name">Beef Pizza</span><span class="item-price">₹300.00</span></div>
+      <div class="menu-item"><span class="item-name">Egg Pizza</span><span class="item-price">₹600.50</span></div>
+      <div class="menu-item"><span class="item-name">Apple Pizza</span><span class="item-price">₹450.00</span></div>
+      <div class="menu-item"><span class="item-name">Cheese Pizza</span><span class="item-price">₹500.50</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Pizza</span><span class="item-price">₹556.50</span></div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section">
+      <div class="section-title">Ice Cream</div>
+      <div class="menu-item"><span class="item-name">Cookie Dough</span><span class="item-price">₹600.00</span></div>
+      <div class="menu-item"><span class="item-name">Vanilla Bean</span><span class="item-price">₹700.00</span></div>
+      <div class="menu-item"><span class="item-name">Cotton Candy</span><span class="item-price">₹650.00</span></div>
+      <div class="menu-item"><span class="item-name">Peanut Butter</span><span class="item-price">₹800.00</span></div>
+      <div class="menu-item"><span class="item-name">Apple Treat</span><span class="item-price">₹550.00</span></div>
+      <div class="menu-item"><span class="item-name">Honey Treat</span><span class="item-price">₹650.00</span></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
