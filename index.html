@@ -37,7 +37,6 @@
         }
 
         .logo { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold); letter-spacing: 4px; }
-
         .nav-links a {
             text-decoration: none;
             color: var(--white);
@@ -74,8 +73,7 @@
             text-align: center;
             margin: 60px 0 40px;
         }
-
-        .section-header h2 {
+   .section-header h2 {
             font-family: 'Cinzel', serif;
             font-size: 2.5rem;
             color: var(--gold);
@@ -100,8 +98,7 @@
             transition: 0.4s;
             border: 1px solid #3d3d3d;
         }
-
-        .food-card:hover { transform: translateY(-10px); border-color: var(--gold); }
+.food-card:hover { transform: translateY(-10px); border-color: var(--gold); }
 
         .food-image { width: 100%; height: 220px; overflow: hidden; }
         .food-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
@@ -130,8 +127,7 @@
 
         .food-card:hover .overlay { opacity: 1; pointer-events: all; }
         .overlay p { font-size: 0.9rem; font-style: italic; margin-bottom: 25px; line-height: 1.6; }
-
-        .add-btn {
+.add-btn {
             background: var(--gold);
             color: black;
             border: none;
@@ -143,8 +139,7 @@
             font-size: 0.75rem;
             transition: 0.3s;
         }
-
-        .add-btn:hover { background: var(--emerald); color: white; }
+.add-btn:hover { background: var(--emerald); color: white; }
 
         /* --- Floating Add to Cart --- */
         .cart-float {
@@ -174,10 +169,68 @@
             justify-content: center;
             color: black;
         }
+        #cartTable {
+    width: 60%;              /* keeps table centered and not full width */
+    margin: 20px auto;       /* center horizontally */
+    border-collapse: collapse;
+}
 
-        footer { background: #000; padding: 40px; text-align: center; border-top: 2px solid var(--gold); margin-top: 60px; }
+#cartTable th {
+    text-align: left;
+    border-bottom: 2px solid #555;
+    padding: 10px;
+}
+
+#cartTable td {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+}
+
+/* Align columns properly */
+#cartTable th:nth-child(2),
+#cartTable td:nth-child(2) {
+    text-align: right;   /* Price aligned right */
+}
+
+#cartTable th:nth-child(3),
+#cartTable td:nth-child(3) {
+    text-align: center;  /* Delete button center */
+}
+ footer { background: #000; padding: 40px; text-align: center; border-top: 2px solid var(--gold); margin-top: 60px; }
+
+
+
+
     </style>
 </head>
+<div id="cartPage" style="
+position:fixed;
+top:0; left:0;
+width:100%; height:100%;
+background:#111;
+color:white;
+display:none;
+z-index:3000;
+padding:20px;
+overflow:auto;
+">
+
+<button onclick="closeCart()" style="
+padding:10px 15px;
+margin-bottom:15px;
+background:red;color:white;border:none;cursor:pointer;">
+⬅ Back
+</button>
+
+<h2>Your Cart</h2>
+
+<table id="cartTable" style="width:100%;margin-top:10px">
+<tr><th>Item</th><th>Price</th><th></th></tr>
+</table>
+
+<h2 id="total">Total: ₹0</h2>
+
+</div>
 <body>
 
     <nav>
@@ -193,13 +246,17 @@
         <h1>UTOPIA</h1>
         <p>Fine Dining Experience</p>
     </header>
-
-    <div class="cart-float">
-        <span>Add to Cart</span>
-        <div class="cart-count" id="cart-count">0</div>
-    </div>
-
-    <div class="container">
+    <div class="cart-box" style="display:none;position:fixed;bottom:0;width:100%;background:black;padding:15px;max-height:40%;overflow:auto;">
+    <h3>🛒 Your Order</h3>
+    <table id="cartTable">
+        <tr><th>Item</th><th>Price</th><th></th></tr>
+    </table>
+    <h3 id="total">Total: ₹0</h3>
+</div>
+    <div class="cart-float" onclick="openCart()">
+    🛒 Cart (<span id="cart-count">0</span>)
+</div>
+     <div class="container">
         <div class="section-header" id="starters"><h2>The Starters</h2></div>
         <div class="menu-grid" id="starters-grid"></div>
 
@@ -216,7 +273,7 @@
     </footer>
 
     <script>
-        const starters = [
+ const starters = [
             { name: "Saffron Paneer Tikka", price: 480, desc: "Soft cottage cheese infused with Kashmiri saffron and grilled in a clay oven.", img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&q=80&w=400" },
             { name: "Crispy Spring Rolls", price: 410, desc: "Golden-fried pastry stuffed with farm-fresh vegetables and glass noodles.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=400" },
             { name: "Peri Peri Corn", price: 420, desc: "Sweet American corn tossed in fiery peri-peri spices and lime juice.", img: "https://images.unsplash.com/photo-1600335895229-6e75511892c8?auto=format&fit=crop&q=80&w=400" },
@@ -224,8 +281,7 @@
             { name: "Tomato Bruschetta", price: 430, desc: "Toasted sourdough slices topped with marinated tomatoes and fresh basil.", img: "https://images.unsplash.com/photo-1572656631137-7935297eff55?auto=format&fit=crop&q=80&w=400" },
             { name: "Cheese Loaded Nachos", price: 460, desc: "Crunchy corn chips topped with jalapeños, olives, and melted cheddar.", img: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&q=80&w=400" },
         ];
-
-        const mains = [
+ const mains = [
             { name: "Dal Makhani Special", price: 520, desc: "Overnight slow-cooked black lentils with cream and house-made butter.", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&q=80&w=400" },
             { name: "Veg Dum Biryani", price: 580, desc: "Fragrant basmati rice slow-cooked with aromatic spices and vegetables.", img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&q=80&w=400" },
             { name: "Thai Green Veg Curry", price: 550, desc: "Authentic spicy green curry served with steamed jasmine rice.", img: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?auto=format&fit=crop&q=80&w=400" },
@@ -236,8 +292,7 @@
             { name: "Wild Mushroom Pasta", price: 540, desc: "Penne pasta tossed in a creamy forest mushroom and parmesan sauce.", img: "https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&q=80&w=400" },
             
         ];
-
-        const drinks = [
+const drinks = [
             { name: "Virgin Mint Mojito", price: 400, desc: "Refreshing muddle of fresh mint, lime, and sparkling soda water.", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=400" },
             { name: "Peach Iced Tea", price: 410, desc: "Cold-brewed tea with natural peach nectar and slices of lemon.", img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=400" },
             { name: "Luxury Hot Chocolate", price: 480, desc: "Melted dark chocolate with steamed milk and a hint of cinnamon.", img: "https://images.unsplash.com/photo-1544739313-6fad02872377?auto=format&fit=crop&q=80&w=400"},
@@ -246,40 +301,142 @@
             { name: "Sparkling Lemonade", price: 390, desc: "Zesty lemon juice with a touch of mint and effervescent bubbles.", img: "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&q=80&w=400" },
             { name: "Brownie Blast Shake", price: 480, desc: "Indulgent shake blended with fudge brownies and chocolate chips.", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&q=80&w=400" }
         ];
-
-        function createGrid(data, containerId) {
+function createGrid(data, containerId) {
             const container = document.getElementById(containerId);
             data.forEach(item => {
                 container.innerHTML += `
                     <div class="food-card">
                         <div class="food-image">
-                            <img src="${item.img}" alt="${item.name}">
+                            <img src="${item.img}" alt="₹{item.name}">
                         </div>
                         <div class="food-info">
                             <h3>${item.name}</h3>
-                            <span class="price">₹${item.price}</span>
-                            <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+                            <span class="price">${item.price}</span>
+                            <button class="add-btn" onclick="addToCart('${item.name}', '${item.price}')">Add to Cart</button>
                         </div>
                         <div class="overlay">
                             <p>${item.desc}</p>
-                            <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+                            <button class="add-btn" onclick="addToCart('${item.name}', '${item.price}')">Add to Cart</button>
                         </div>
                     </div>
                 `;
             });
         }
+ 
+    
+let cart = [];
+let cartCount = 0;
 
-        let cartCount = 0;
-        function addToCart() {
-            cartCount++;
-            document.getElementById('cart-count').innerText = cartCount;
-        }
+// ADD ITEM
+function addToCart(name, price) {
+    cart.push({ 
+        name, 
+        price: Number(price)   // ✅ IMPORTANT FIX
+    });
 
+    cartCount++;
+    document.getElementById('cart-count').innerText = cartCount;
+}
+
+// OPEN CART PAGE
+function openCart() {
+    document.getElementById('cartPage').style.display = 'block';
+    renderCart();
+}
+
+// CLOSE CART PAGE
+function closeCart() {
+    document.getElementById('cartPage').style.display = 'none';
+}
+
+// REMOVE ITEM
+function removeItem(index) {
+    cart.splice(index, 1);
+    cartCount--;
+
+    document.getElementById('cart-count').innerText = cartCount;
+
+    renderCart();
+}
+
+// RENDER TABLE
+function renderCart() {
+    let table = document.getElementById('cartTable');
+
+    table.innerHTML = `
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    `;
+
+    let total = 0;
+
+    cart.forEach((item, i) => {
+        total += Number(item.price);
+
+        table.innerHTML += `
+        <tr>
+            <td>${item.name}</td>
+            <td>₹${item.price}</td>
+            <td><button onclick="removeItem(${i})">X</button></td>
+        </tr>`;
+    });
+
+    document.getElementById('total').innerText = "Total: ₹" + total;
+}
+   
         window.onload = () => {
             createGrid(starters, 'starters-grid');
             createGrid(mains, 'main-grid');
             createGrid(drinks, 'drinks-grid');
         };
+       
+
+
+
+
+        function removeItem(index) {
+    cart.splice(index, 1);
+    cartCount--;
+
+    document.getElementById('cart-count').innerText = cartCount;
+
+    renderCart();
+
+    // optional: hide cart if empty
+    if (cart.length === 0) {
+        document.querySelector('.cart-box').style.display = 'none';
+    }
+}
+
+function renderCart() {
+    let table = document.getElementById('cartTable');
+
+    table.innerHTML = "<tr><th>Item</th><th>Price</th><th></th></tr>";
+
+    let total = 0;
+
+    cart.forEach((item, i) => {
+        total += item.price;
+
+        table.innerHTML += `
+        <tr>
+            <td>${item.name}</td>
+            <td>₹${item.price}</td>
+            <td><button onclick="removeItem(${i})">X</button></td>
+        </tr>`;
+    });
+
+    // ✅ IMPORTANT (you missed this)
+    document.getElementById('total').innerText = "Total: ₹" + total;
+}
+    
+
+
+        
+
     </script>
 </body>
 </html>
